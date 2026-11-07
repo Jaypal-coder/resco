@@ -1,11 +1,44 @@
 import { useState, useRef } from 'react'
 import './App.css'
+import { analyzeResume } from './analyzeResume'
+
+/* Feedback ke liye: har check ka status aur salah */
+const ADVICE = {
+  'Keyword match': {
+    good: 'Your resume covers most of the important keywords.',
+    fix: 'Add the missing keywords where they honestly apply. Paste a job description for a role-specific match.',
+  },
+  'Sections and structure': {
+    good: 'Standard section headings are present, so an ATS can parse your resume.',
+    fix: 'Use clear headings like Summary, Education, Skills, Projects and Experience.',
+  },
+  'Formatting and readability': {
+    good: 'Your resume length looks right.',
+    fix: 'Keep your resume between about 300 and 800 words, ideally one page.',
+  },
+  'Contact details': {
+    good: 'Email, phone and profile links are easy to find.',
+    fix: 'Add your email, phone number and a LinkedIn or GitHub link at the top.',
+  },
+  'Action verbs and impact': {
+    good: 'Your bullets show action and results.',
+    fix: 'Start bullets with verbs like Built or Led, and add numbers such as "improved speed by 30%".',
+  },
+}
+
+const getStatus = (v) =>
+  v >= 80 ? { text: 'Good', cls: 'good' }
+  : v >= 50 ? { text: 'Needs work', cls: 'warn' }
+  : { text: 'Weak', cls: 'bad' }
 
 function App() {
   const [signedUp, setSignedUp] = useState(false)
   const [file, setFile] = useState(null)
   const [dragging, setDragging] = useState(false)
   const [error, setError] = useState('')
+  const [result, setResult] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [jd, setJd] = useState('')
   const fileInputRef = useRef(null)
 
   const handleSubmit = (e) => {
@@ -21,12 +54,30 @@ function App() {
     if (f.size > 5 * 1024 * 1024) return setError('File 5 MB se chhoti honi chahiye.')
     setError('')
     setFile(f)
+    setResult(null)
   }
 
   const handleDrop = (e) => {
     e.preventDefault()
     setDragging(false)
     pickFile(e.dataTransfer.files[0])
+  }
+
+  const handleAnalyze = async () => {
+    setLoading(true)
+    setError('')
+    try {
+      const res = await analyzeResume(file, jd)
+      setResult(res)
+      setTimeout(() => {
+        document.getElementById('score').scrollIntoView({ behavior: 'smooth' })
+      }, 50)
+    } catch (err) {
+      setResult(null)
+      setError(err.message || 'Resume analyze nahi ho paya.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   /* ---------- PAGE 1: SIGN-UP (navbar nahi) ---------- */
@@ -129,7 +180,11 @@ function App() {
                   <span className="file-status">Ready to analyze</span>
                 </div>
                 <div className="progress"><div className="progress-fill" /></div>
-                <button type="button" className="remove-btn" onClick={() => setFile(null)}>
+                <button
+                  type="button"
+                  className="remove-btn"
+                  onClick={() => { setFile(null); setResult(null) }}
+                >
                   Remove
                 </button>
               </div>
@@ -140,16 +195,21 @@ function App() {
               <p className="jd-sub">
                 Paste the job posting to see exactly which keywords your resume is missing.
               </p>
-              <textarea placeholder="Paste the job description here" rows="6" />
+              <textarea
+                placeholder="Paste the job description here"
+                rows="6"
+                value={jd}
+                onChange={(e) => setJd(e.target.value)}
+              />
             </div>
 
             <button
               type="button"
               className="analyze-btn"
-              disabled={!file}
-              onClick={() => document.getElementById('score').scrollIntoView({ behavior: 'smooth' })}
+              disabled={!file || loading}
+              onClick={handleAnalyze}
             >
-              Analyze my resume &rarr;
+              {loading ? 'Analyzing...' : <>Analyze my resume &rarr;</>}
             </button>
           </div>
 
@@ -174,9 +234,125 @@ function App() {
         </div>
       </section>
 
+      {/* ---------- SCORE ---------- */}
+      <section id="score" className="section">
+        <p className="step-label">STEP 2</p>
+        <h1 className="section-title">Your ATS <span>score</span></h1>
+
+        {!result ? (
+          <p className="section-sub">
+            Upload your resume above and click "Analyze my resume" to see your score here.
+          </p>
+        ) : (
+          <>
+            <p className="section-sub">
+              Here is how an applicant tracking system would read your resume.
+            </p>
+
+            <div className="score-layout">
+              {/* LEFT: big score */}
+              <div className="score-main">
+                <div className="score-circle" style={{ '--score': result.score }}>
+                  <span>{result.score}</span>
+                </div>
+                <p className="score-label">{result.label}</p>
+                <p className="score-note">out of 100</p>
+              </div>
+
+              {/* RIGHT: breakdown */}
+              <div className="score-breakdown">
+                <h3>Score breakdown</h3>
+                {result.breakdown.map((item) => (
+                  <div className="bar-row" key={item.name}>
+                    <div className="bar-top">
+                      <span>{item.name}</span>
+                      <span>{item.value}%</span>
+                    </div>
+                    <div className="bar-track">
+                      <div className="bar-fill" style={{ width: `${item.value}%` }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="score-extra">
+              <div className="missing-card">
+                <h3>Missing keywords</h3>
+                <div className="chips">
+                  {result.missing.map((word) => (
+                    <span className="chip" key={word}>{word}</span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="tips-card">
+                <h3>Quick wins</h3>
+                <ul>
+                  {result.tips.map((tip) => (
+                    <li key={tip}>{tip}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </>
+        )}
+      </section>
+
       {/* ---------- BAAKI SECTIONS (baad me bharenge) ---------- */}
-      <section id="score" className="section"><h1 className="section-title">Your ATS <span>score</span></h1></section>
-      <section id="feedback" className="section"><h1 className="section-title">Feedback</h1></section>
+      <section id="feedback" className="section">
+        <p className="step-label">STEP 3</p>
+        <h1 className="section-title">Improvement <span>feedback</span></h1>
+
+        {!result ? (
+          <p className="section-sub">
+            Analyze your resume first. Your personalised feedback will show up here.
+          </p>
+        ) : (
+          <>
+            <p className="section-sub">
+              Fix the weakest areas first. Small changes here move your score the most.
+            </p>
+
+            <div className="priority-card">
+              <h3>Fix these first</h3>
+              {[...result.breakdown]
+                .sort((x, y) => x.value - y.value)
+                .filter((item) => item.value < 80)
+                .slice(0, 2)
+                .map((item) => (
+                  <div className="priority-item" key={item.name}>
+                    <b>{item.name} ({item.value}%)</b>
+                    <span>{ADVICE[item.name].fix}</span>
+                  </div>
+                ))}
+              {result.breakdown.every((item) => item.value >= 80) && (
+                <p className="priority-ok">Nothing urgent. Your resume looks solid.</p>
+              )}
+            </div>
+
+            <div className="feedback-grid">
+              {result.breakdown.map((item) => {
+                const status = getStatus(item.value)
+                return (
+                  <div className="feedback-card" key={item.name}>
+                    <div className="feedback-top">
+                      <h3>{item.name}</h3>
+                      <span className={`badge ${status.cls}`}>{status.text}</span>
+                    </div>
+                    <div className="bar-track">
+                      <div className={`bar-fill ${status.cls}`} style={{ width: `${item.value}%` }} />
+                    </div>
+                    <p className="feedback-text">
+                      {item.value >= 80 ? ADVICE[item.name].good : ADVICE[item.name].fix}
+                    </p>
+                  </div>
+                )
+              })}
+            </div>
+          </>
+        )}
+      </section>
       <section id="templates" className="section"><h1 className="section-title">Templates</h1></section>
       <section id="about" className="section"><h1 className="section-title">About</h1></section>
     </div>

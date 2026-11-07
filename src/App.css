@@ -365,3 +365,106 @@ html { scroll-behavior: smooth; }
 .check-card li span { font-size: 12px; color: #94a3b8; }
 .tip-card { font-size: 13px; line-height: 1.6; color: #cbd5e1; }
 .tip-card b { color: rgb(23, 190, 159); }
+
+/* ================= SCORE SECTION ================= */
+.score-layout { display: flex; gap: 30px; flex-wrap: wrap; align-items: stretch; margin-bottom: 30px; }
+
+.score-main {
+  flex: 1;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 36px 24px;
+  background-color: #0a1d37;
+  border: 1px solid #064268;
+  border-radius: 16px;
+}
+
+.score-circle {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 180px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: conic-gradient(rgb(23, 190, 159) calc(var(--score) * 1%), #064268 0);
+}
+.score-circle::before {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border-radius: 50%;
+  background-color: #0a1d37;
+}
+.score-circle span { position: relative; font-size: 48px; font-weight: bold; }
+
+.score-label { margin-top: 20px; font-size: 22px; font-weight: bold; color: rgb(23, 190, 159); }
+.score-note { margin-top: 4px; font-size: 13px; color: #94a3b8; }
+
+.score-breakdown, .missing-card, .tips-card {
+  padding: 26px;
+  background-color: #0a1d37;
+  border: 1px solid #064268;
+  border-radius: 16px;
+}
+.score-breakdown { flex: 2; min-width: 300px; }
+.score-breakdown h3, .missing-card h3, .tips-card h3 { margin-bottom: 18px; font-size: 18px; }
+
+.bar-row { margin-bottom: 16px; }
+.bar-top { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 14px; color: #cbd5e1; }
+.bar-track { height: 8px; background-color: #064268; border-radius: 8px; overflow: hidden; }
+.bar-fill { height: 100%; background-color: rgb(23, 190, 159); border-radius: 8px; transition: width 0.6s ease; }
+
+.score-extra { display: flex; gap: 30px; flex-wrap: wrap; }
+.missing-card, .tips-card { flex: 1; min-width: 280px; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip {
+  padding: 6px 14px;
+  background-color: #021024;
+  border: 1px solid #9e2a2b;
+  border-radius: 20px;
+  font-size: 13px;
+  color: #f0b4b7;
+}
+
+.tips-card ul { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+.tips-card li { position: relative; padding-left: 22px; font-size: 14px; line-height: 1.5; color: #cbd5e1; }
+.tips-card li::before { content: "→"; position: absolute; left: 0; color: rgb(23, 190, 159); }
+
+/* ================= FEEDBACK SECTION ================= */
+.priority-card {
+  padding: 26px;
+  margin-bottom: 30px;
+  background-color: #0a1d37;
+  border: 1px solid #9e2a2b;
+  border-radius: 16px;
+}
+.priority-card h3 { margin-bottom: 16px; font-size: 18px; }
+.priority-item { display: flex; flex-direction: column; gap: 4px; margin-bottom: 14px; }
+.priority-item:last-child { margin-bottom: 0; }
+.priority-item b { font-size: 14px; color: #f0b4b7; }
+.priority-item span { font-size: 14px; line-height: 1.5; color: #cbd5e1; }
+.priority-ok { font-size: 14px; color: rgb(23, 190, 159); }
+
+.feedback-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+.feedback-card {
+  padding: 24px;
+  background-color: #0a1d37;
+  border: 1px solid #064268;
+  border-radius: 16px;
+}
+.feedback-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px; }
+.feedback-top h3 { font-size: 16px; }
+.feedback-text { margin-top: 14px; font-size: 14px; line-height: 1.6; color: #cbd5e1; }
+
+.badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; white-space: nowrap; }
+.badge.good { background-color: rgba(23, 190, 159, 0.15); color: rgb(23, 190, 159); }
+.badge.warn { background-color: rgba(230, 170, 60, 0.15); color: #e6aa3c; }
+.badge.bad { background-color: rgba(158, 42, 43, 0.25); color: #f0b4b7; }
+
+.bar-fill.good { background-color: rgb(23, 190, 159); }
+.bar-fill.warn { background-color: #e6aa3c; }
+.bar-fill.bad { background-color: #9e2a2b; }

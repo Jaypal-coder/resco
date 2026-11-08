@@ -38,12 +38,7 @@ Then open `http://localhost:5173` in your browser.
 
 ## Screenshots
 
-Add your screenshots here:
 
-```md
-![Sign-up page](./screenshots/signup.png)
-![Upload section](./screenshots/upload.png)
-```
 
 ## Roadmap
 

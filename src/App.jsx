@@ -108,6 +108,7 @@ const TECH = [
 
 function App() {
   const [signedUp, setSignedUp] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [file, setFile] = useState(null);
   const [dragging, setDragging] = useState(false);
   const [error, setError] = useState("");
@@ -117,6 +118,8 @@ function App() {
   const [template, setTemplate] = useState("classic");
   const [resume, setResume] = useState(STARTER);
   const fileInputRef = useRef(null);
+
+  const closeMenu = () => setMenuOpen(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -164,54 +167,67 @@ function App() {
   if (!signedUp) {
     return (
       <div className="auth-page">
-        <p className="title"> &#x1F5CE; 𝚁𝚎𝚜𝚌𝚘</p>
+        {/* LEFT: branding */}
+        <div className="auth-left">
+          <p className="title"> &#x1F5CE; 𝚁𝚎𝚜𝚌𝚘</p>
 
-        <p className="t1">ATS RESUME CHECKER</p>
+          <p className="t1">ATS RESUME CHECKER</p>
 
-        <p className="t2">
-          Know your <span className="ats">ATS score </span>
-          <br />
-          before the recruiter <br />
-          does.
-        </p>
-
-        <p className="t3">
-          Upload your resume, see how applicant tracking systems read it,
-          <br />
-          and fix what is holding it back.
-        </p>
-
-        <div className="card1">
-          <div className="circle"> 82 </div>
-          <p className="t4">Sample Result </p>
-          <p className="t5">
-            Strong <br /> Match{" "}
+          <p className="t2">
+            Know your <span className="ats">ATS score </span>
+            <br />
+            before the recruiter <br />
+            does.
           </p>
+
+          <p className="t3">
+            Upload your resume, see how applicant tracking systems read it,
+            <br />
+            and fix what is holding it back.
+          </p>
+
+          <div className="card1">
+            <div className="circle"> 82 </div>
+            <div className="card1-text">
+              <p className="t4">Sample Result </p>
+              <p className="t5">
+                Strong <br /> Match{" "}
+              </p>
+            </div>
+          </div>
         </div>
 
-        <div className="register">
-          <div className="sign-logo">Sign-up</div>
-          <p className="welcome">Welcome to Resco</p>
-          <p className="tagline">Sign up to check your resume's ATS score.</p>
+        {/* RIGHT: sign-up card */}
+        <div className="auth-right">
+          <div className="register">
+            <div className="sign-logo">Sign-up</div>
+            <p className="welcome">Welcome to Resco</p>
+            <p className="tagline">Sign up to check your resume's ATS score.</p>
 
-          <form className="signup-form" onSubmit={handleSubmit}>
-            <input
-              type="text"
-              name="username"
-              placeholder="Username"
-              required
-            />
-            <input type="email" name="email" placeholder="Email ID" required />
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              required
-            />
-            <button type="submit" className="signup-btn">
-              Get Started
-            </button>
-          </form>
+            <form className="signup-form" onSubmit={handleSubmit}>
+              <input
+                type="text"
+                name="username"
+                placeholder="Username"
+                required
+              />
+              <input
+                type="email"
+                name="email"
+                placeholder="Email ID"
+                required
+              />
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                required
+              />
+              <button type="submit" className="signup-btn">
+                Get Started
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     );
@@ -222,21 +238,43 @@ function App() {
     <div className="site">
       <nav className="navbar">
         <div className="nav-logo">&#x1F5CE; 𝚁𝚎𝚜𝚌𝚘</div>
-        <ul className="nav-links">
+
+        {/* Hamburger: sirf mobile pe dikhta hai */}
+        <button
+          type="button"
+          className="menu-btn"
+          aria-label="Toggle menu"
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          {menuOpen ? "✕" : "☰"}
+        </button>
+
+        <ul className={`nav-links ${menuOpen ? "open" : ""}`}>
           <li>
-            <a href="#upload">Upload</a>
+            <a href="#upload" onClick={closeMenu}>
+              Upload
+            </a>
           </li>
           <li>
-            <a href="#score">Score</a>
+            <a href="#score" onClick={closeMenu}>
+              Score
+            </a>
           </li>
           <li>
-            <a href="#feedback">Feedback</a>
+            <a href="#feedback" onClick={closeMenu}>
+              Feedback
+            </a>
           </li>
           <li>
-            <a href="#templates">Templates</a>
+            <a href="#templates" onClick={closeMenu}>
+              Templates
+            </a>
           </li>
           <li>
-            <a href="#about">About</a>
+            <a href="#about" onClick={closeMenu}>
+              About
+            </a>
           </li>
         </ul>
       </nav>
@@ -460,7 +498,7 @@ function App() {
         )}
       </section>
 
-      {/* ---------- BAAKI SECTIONS (baad me bharenge) ---------- */}
+      {/* ---------- FEEDBACK ---------- */}
       <section id="feedback" className="section">
         <p className="step-label">STEP 3</p>
         <h1 className="section-title">
@@ -529,6 +567,7 @@ function App() {
           </>
         )}
       </section>
+
       {/* ---------- TEMPLATES ---------- */}
       <section id="templates" className="section">
         <p className="step-label">STEP 4</p>

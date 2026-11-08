@@ -38,6 +38,24 @@ Then open `http://localhost:5173` in your browser.
 
 ## Screenshots
 
+### Sign-up
+![Sign-up page](./screenshots/sign_up.png)
+
+### Upload
+![Upload section](./screenshots/upload.png)
+
+### ATS Score
+![Score section](./screenshots/score.png)
+
+### Feedback
+![Feedback section](./screenshots/feedback.png)
+
+### Resume Templates
+![Templates section](./screenshots/template.png)
+
+### About
+![About section](./screenshots/about.png)
+
 
 
 ## Roadmap

@@ -1,10 +1,10 @@
 import { useState, useRef } from "react";
 import "./App.css";
 import { analyzeResume } from "./analyzeResume";
-import { FaReact, FaCss3Alt, FaFilePdf, FaFileWord } from 'react-icons/fa'
-import { SiVite } from 'react-icons/si'
+import { FaReact, FaCss3Alt, FaFilePdf, FaFileWord } from "react-icons/fa";
+import { SiVite } from "react-icons/si";
 
-/* Feedback ke liye: har check ka status aur salah */
+/* Feedback  */
 const ADVICE = {
   "Keyword match": {
     good: "Your resume covers most of the important keywords.",
@@ -55,43 +55,56 @@ const TEMPLATES = [
 ];
 
 const STARTER = {
-  name: 'Your Name',
-  title: 'Frontend Developer',
-  email: 'you@example.com',
-  phone: '+91 98765 43210',
-  location: 'Vadodara, Gujarat',
-  links: 'github.com/yourname | linkedin.com/in/yourname',
-  summary: 'Final-year BCA student who builds responsive React interfaces and enjoys turning designs into clean, working products. Looking for a frontend internship to grow with a real team.',
-  skills: 'JavaScript, React, HTML, CSS, Git, Node.js, Express, MongoDB, SQL',
-  experience: 'Frontend Intern, Company Name (Jun 2026 - Aug 2026)\nBuilt reusable React components used across 5 pages.\nImproved page load time by 30% by optimizing images and code.\nWorked with a team of 4 using Git and weekly code reviews.',
-  projects: 'Resco: Built a React app that estimates ATS score from a resume.\nPortfolio Website: Designed a responsive personal site used for internship applications.\nExpense Tracker: Developed a React app with charts and local storage for 100+ entries.',
-  education: 'BCA, Your University, 2023 - 2026, CGPA 9.0',
-  achievements: 'University Rank 1 in BCA\nWon college hackathon among 40+ teams',
-  certifications: 'React Developer Course, Chai aur Code\nResponsive Web Design, freeCodeCamp',
-}
-const toLines = (text) => text.split('\n').filter((line) => line.trim())
+  name: "Your Name",
+  title: "Frontend Developer",
+  email: "you@example.com",
+  phone: "+91 98765 43210",
+  location: "Vadodara, Gujarat",
+  links: "github.com/yourname | linkedin.com/in/yourname",
+  summary:
+    "Final-year BCA student who builds responsive React interfaces and enjoys turning designs into clean, working products. Looking for a frontend internship to grow with a real team.",
+  skills: "JavaScript, React, HTML, CSS, Git, Node.js, Express, MongoDB, SQL",
+  experience:
+    "Frontend Intern, Company Name (Jun 2026 - Aug 2026)\nBuilt reusable React components used across 5 pages.\nImproved page load time by 30% by optimizing images and code.\nWorked with a team of 4 using Git and weekly code reviews.",
+  projects:
+    "Resco: Built a React app that estimates ATS score from a resume.\nPortfolio Website: Designed a responsive personal site used for internship applications.\nExpense Tracker: Developed a React app with charts and local storage for 100+ entries.",
+  education: "BCA, Your University, 2023 - 2026, CGPA 9.0",
+  achievements:
+    "University Rank 1 in BCA\nWon college hackathon among 40+ teams",
+  certifications:
+    "React Developer Course, Chai aur Code\nResponsive Web Design, freeCodeCamp",
+};
+const toLines = (text) => text.split("\n").filter((line) => line.trim());
 const FIELDS = [
-  { key: 'name', label: 'Full name', type: 'input' },
-  { key: 'title', label: 'Job title', type: 'input' },
-  { key: 'email', label: 'Email', type: 'input' },
-  { key: 'phone', label: 'Phone', type: 'input' },
-  { key: 'location', label: 'Location', type: 'input' },
-  { key: 'links', label: 'Links', type: 'input' },
-  { key: 'summary', label: 'Summary', type: 'area' },
-  { key: 'skills', label: 'Skills (comma separated)', type: 'input' },
-  { key: 'experience', label: 'Experience (first line = role, then one bullet per line)', type: 'area' },
-  { key: 'projects', label: 'Projects (one per line)', type: 'area' },
-  { key: 'education', label: 'Education', type: 'input' },
-  { key: 'achievements', label: 'Achievements (one per line)', type: 'area' },
-  { key: 'certifications', label: 'Certifications (one per line)', type: 'area' },
-]
+  { key: "name", label: "Full name", type: "input" },
+  { key: "title", label: "Job title", type: "input" },
+  { key: "email", label: "Email", type: "input" },
+  { key: "phone", label: "Phone", type: "input" },
+  { key: "location", label: "Location", type: "input" },
+  { key: "links", label: "Links", type: "input" },
+  { key: "summary", label: "Summary", type: "area" },
+  { key: "skills", label: "Skills (comma separated)", type: "input" },
+  {
+    key: "experience",
+    label: "Experience (first line = role, then one bullet per line)",
+    type: "area",
+  },
+  { key: "projects", label: "Projects (one per line)", type: "area" },
+  { key: "education", label: "Education", type: "input" },
+  { key: "achievements", label: "Achievements (one per line)", type: "area" },
+  {
+    key: "certifications",
+    label: "Certifications (one per line)",
+    type: "area",
+  },
+];
 const TECH = [
-  { name: 'React', icon: <FaReact />, note: 'UI and state' },
-  { name: 'Vite', icon: <SiVite />, note: 'Fast dev server and build' },
-  { name: 'CSS', icon: <FaCss3Alt />, note: 'Flexbox, Grid, animations' },
-  { name: 'pdf.js', icon: <FaFilePdf />, note: 'Reads text from PDF' },
-  { name: 'mammoth', icon: <FaFileWord />, note: 'Reads text from DOCX' },
-]
+  { name: "React", icon: <FaReact />, note: "UI and state" },
+  { name: "Vite", icon: <SiVite />, note: "Fast dev server and build" },
+  { name: "CSS", icon: <FaCss3Alt />, note: "Flexbox, Grid, animations" },
+  { name: "pdf.js", icon: <FaFilePdf />, note: "Reads text from PDF" },
+  { name: "mammoth", icon: <FaFileWord />, note: "Reads text from DOCX" },
+];
 
 function App() {
   const [signedUp, setSignedUp] = useState(false);
@@ -518,7 +531,6 @@ function App() {
       </section>
       {/* ---------- TEMPLATES ---------- */}
       <section id="templates" className="section">
-        
         <p className="step-label">STEP 4</p>
         <h1 className="section-title">
           Resume <span>templates</span>
@@ -588,48 +600,52 @@ function App() {
             <p className="preview-label">Live preview</p>
             <div className={`resume-sheet ${template}`} id="resume-print">
               <h2 className="rs-name">{resume.name}</h2>
-<p className="rs-title">{resume.title}</p>
-<p className="rs-contact">
-  {[resume.email, resume.phone, resume.location, resume.links].filter(Boolean).join('  |  ')}
-</p>
+              <p className="rs-title">{resume.title}</p>
+              <p className="rs-contact">
+                {[resume.email, resume.phone, resume.location, resume.links]
+                  .filter(Boolean)
+                  .join("  |  ")}
+              </p>
 
-<h4 className="rs-heading">Summary</h4>
-<p className="rs-text">{resume.summary}</p>
+              <h4 className="rs-heading">Summary</h4>
+              <p className="rs-text">{resume.summary}</p>
 
-<h4 className="rs-heading">Skills</h4>
-<p className="rs-text">{resume.skills}</p>
+              <h4 className="rs-heading">Skills</h4>
+              <p className="rs-text">{resume.skills}</p>
 
-<h4 className="rs-heading">Experience</h4>
-<p className="rs-role">{toLines(resume.experience)[0]}</p>
-<ul className="rs-list">
-  {toLines(resume.experience).slice(1).map((line, i) => (
-    <li key={i}>{line}</li>
-  ))}
-</ul>
+              <h4 className="rs-heading">Experience</h4>
+              <p className="rs-role">{toLines(resume.experience)[0]}</p>
+              <ul className="rs-list">
+                {toLines(resume.experience)
+                  .slice(1)
+                  .map((line, i) => (
+                    <li key={i}>{line}</li>
+                  ))}
+              </ul>
 
-<h4 className="rs-heading">Projects</h4>
-<ul className="rs-list">
-  {toLines(resume.projects).map((line, i) => (
-    <li key={i}>{line}</li>
-  ))}
-</ul>
+              <h4 className="rs-heading">Projects</h4>
+              <ul className="rs-list">
+                {toLines(resume.projects).map((line, i) => (
+                  <li key={i}>{line}</li>
+                ))}
+              </ul>
 
-<h4 className="rs-heading">Education</h4>
-<p className="rs-text">{resume.education}</p>
+              <h4 className="rs-heading">Education</h4>
+              <p className="rs-text">{resume.education}</p>
 
-<h4 className="rs-heading">Achievements</h4>
-<ul className="rs-list">
-  {toLines(resume.achievements).map((line, i) => (
-    <li key={i}>{line}</li>
-  ))}
-</ul>
+              <h4 className="rs-heading">Achievements</h4>
+              <ul className="rs-list">
+                {toLines(resume.achievements).map((line, i) => (
+                  <li key={i}>{line}</li>
+                ))}
+              </ul>
 
-<h4 className="rs-heading">Certifications</h4>
-<ul className="rs-list">
-  {toLines(resume.certifications).map((line, i) => (
-    <li key={i}>{line}</li>
-  ))}
-</ul>
+              <h4 className="rs-heading">Certifications</h4>
+              <ul className="rs-list">
+                {toLines(resume.certifications).map((line, i) => (
+                  <li key={i}>{line}</li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
@@ -693,13 +709,24 @@ function App() {
                 <b>Formatting (10%)</b> Resume length and readability.
               </li>
             </ul>
-           <h1 className="about-gap">Why Resco</h1>
-<ul className="about-list">
-  <li><b>Instant results</b> Your score appears in seconds, right in the browser.</li>
-  <li><b>Private by design</b> Your resume never leaves your device.</li>
-  <li><b>Role-specific</b> Paste a job description to match its keywords.</li>
-  <li><b>Fix and download</b> Improve with feedback, then build a clean PDF resume.</li>
-</ul>
+            <h1 className="about-gap">Why Resco</h1>
+            <ul className="about-list">
+              <li>
+                <b>Instant results</b> Your score appears in seconds, right in
+                the browser.
+              </li>
+              <li>
+                <b>Private by design</b> Your resume never leaves your device.
+              </li>
+              <li>
+                <b>Role-specific</b> Paste a job description to match its
+                keywords.
+              </li>
+              <li>
+                <b>Fix and download</b> Improve with feedback, then build a
+                clean PDF resume.
+              </li>
+            </ul>
             <p className="about-note">
               The score is a rule-based estimate. Real ATS software does not
               publish its exact algorithm.
@@ -714,17 +741,17 @@ function App() {
             </p>
             <h3 className="about-gap">Built with</h3>
             <br></br>
-      <div className="tech-list">
-  {TECH.map((tech) => (
-    <div className="tech-item" key={tech.name}>
-      <span className="tech-icon">{tech.icon}</span>
-      <div>
-        <b>{tech.name}</b>
-        <span>{tech.note}</span>
-      </div>
-    </div>
-  ))}
-</div>
+            <div className="tech-list">
+              {TECH.map((tech) => (
+                <div className="tech-item" key={tech.name}>
+                  <span className="tech-icon">{tech.icon}</span>
+                  <div>
+                    <b>{tech.name}</b>
+                    <span>{tech.note}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 

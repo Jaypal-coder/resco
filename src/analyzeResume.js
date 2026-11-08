@@ -1,10 +1,10 @@
 /* ============================================================
    Resco: rule-based resume analyzer (frontend only, no AI)
-   1) extractText(file)   -> resume ka text nikalta hai (PDF / DOCX)
-   2) analyzeText(text,jd) -> rules se score, bars, missing keywords, tips
+   1) extractText(file)   
+   2) analyzeText(text,jd) 
    ============================================================ */
 
-/* ---------- 1. TEXT NIKALNA ---------- */
+/* ---------- 1. Extracting Text ---------- */
 export async function extractText(file) {
   const buffer = await file.arrayBuffer()
   const name = file.name.toLowerCase()
@@ -191,7 +191,7 @@ export function analyzeText(text, jobDescription = '') {
   }
 }
 
-/* ---------- 3. DONO JOD KE EK FUNCTION ---------- */
+/* ---------- 3. Combine function ---------- */
 export async function analyzeResume(file, jobDescription) {
   const text = await extractText(file)
   if (text.replace(/\s/g, '').length < 50) {

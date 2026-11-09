@@ -216,9 +216,7 @@ html {
   font-size: 20px;
   font-weight: bold;
 }
-.nav-logo span {
-  color: rgb(23, 190, 159);
-}
+
 .nav-links {
   display: flex;
   gap: 8px;
@@ -1400,3 +1398,13 @@ html {
     gap: 12px;
   }
 }
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-text {
+    font-family: "Courier Prime", "Courier New", monospace;
+    font-weight: bold;
+    letter-spacing: 0.15em;
+  }

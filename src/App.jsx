@@ -35,7 +35,7 @@ const getStatus = (v) =>
       ? { text: "Needs work", cls: "warn" }
       : { text: "Weak", cls: "bad" };
 
-/* Templates: starting data aur template list */
+/* Templates: starting data and template list */
 const TEMPLATES = [
   {
     id: "classic",
@@ -163,7 +163,7 @@ function App() {
 
   const updateField = (key, value) => setResume({ ...resume, [key]: value });
 
-  /* ---------- PAGE 1: SIGN-UP (navbar nahi) ---------- */
+  /* ---------- PAGE 1: SIGN-UP  ---------- */
   if (!signedUp) {
     return (
       <div className="auth-page">
@@ -239,7 +239,7 @@ function App() {
       <nav className="navbar">
         <div className="nav-logo">&#x1F5CE; 𝚁𝚎𝚜𝚌𝚘</div>
 
-        {/* Hamburger: sirf mobile pe dikhta hai */}
+        {/* Hamburger: for mobile access */}
         <button
           type="button"
           className="menu-btn"

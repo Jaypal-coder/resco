@@ -2,10 +2,9 @@
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box; /* padding/border width ke andar count hoti hai, layout predictable rehta hai */
+  box-sizing: border-box; 
 }
 
-/* Vite ki default index.css se bachne ke liye */
 body {
   display: block;
   background-color: #021024;
@@ -15,7 +14,6 @@ body {
 }
 
 /* ================= SIGN-UP PAGE ================= */
-/* Desktop: 2 columns (left branding, right form). Chhoti screen pe 1 column. */
 .auth-page {
   min-height: 100vh;
   display: grid;
@@ -983,14 +981,14 @@ html {
   color: #777;
 }
 
-/* PDF download: sirf resume print ho */
+/* PDF download */
 @media print {
   @page {
     size: A4;
     margin: 12mm;
   }
 
-  /* baaki sab hide (jagah bhi nahi lenge) */
+  
   .navbar,
   .site > section:not(#templates),
   #templates > *:not(.editor-layout),
@@ -1208,12 +1206,11 @@ html {
 }
 
 /* ================= RESPONSIVE ================= */
-/* "screen and" isliye ki ye rules print (PDF) me na lagein */
 .menu-btn {
-  display: none; /* hamburger sirf mobile pe */
+  display: none; 
 }
 
-/* ---------- Laptop chhota / large tablet ---------- */
+/* ---------- Laptop(small) / large tablet ---------- */
 @media screen and (max-width: 1024px) {
   .auth-page {
     gap: 32px;
@@ -1239,7 +1236,7 @@ html {
 /* ---------- Tablet ---------- */
 @media screen and (max-width: 900px) {
   .auth-page {
-    grid-template-columns: 1fr; /* 2 column se 1 column */
+    grid-template-columns: 1fr; 
     gap: 40px;
     padding: 28px 24px 56px;
   }
@@ -1355,7 +1352,7 @@ html {
     flex: 1 1 100%;
   }
 
-  /* 3-card grids: mobile pe 1 column */
+  /* 3-card grids: at mobile 1 column */
   .template-picker,
   .about-grid {
     grid-template-columns: 1fr;
@@ -1368,7 +1365,7 @@ html {
   }
 }
 
-/* ---------- Chhota mobile ---------- */
+/* ---------- Small mobile ---------- */
 @media screen and (max-width: 480px) {
   .auth-page {
     gap: 32px;

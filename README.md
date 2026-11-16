@@ -70,4 +70,5 @@ Then open `http://localhost:5173` in your browser.
 ## Author
 
 **Jaypal Solanki**
+
 [GitHub](https://github.com/Jaypal-coder) | [LinkedIn](https://linkedin.com/in/jaypal-solanki-997039327)
